@@ -1,0 +1,151 @@
+﻿@{
+    ViewBag.Title = "Login";
+}
+
+<style>
+
+    .container {
+        background-image: url("https://wallpapercave.com/wp/wp5236129.png");
+        height: 100%;
+    }
+
+    body {
+        padding: 0px;
+        margin: 0px;
+    }
+
+    .container {
+        display: flex;
+        justify-content: center;
+        text-align: center;
+        align-items: center;
+    }
+
+    .formulario {
+        background-color: #E2EFFC;
+        display: flex;
+        flex-direction: column;
+        width: 25%;
+        padding: 3%;
+        border-radius: 10px;
+        font-family: Arial, Helvetica, sans-serif;
+        opacity: 80%;
+    }
+
+    span {
+        color: #4F2C71;
+    }
+
+    label {
+        font-weight: 700;
+    }
+
+    .texto {
+        text-align: left;
+    }
+
+    .btn-login {
+        width: 100px;
+        margin-left: 35%;
+        border: none;
+        background-color: #9EC5ED;
+        height: 30px;
+        border-radius: 15px;
+        cursor: pointer;
+    }
+
+        .btn-login:hover {
+            background-color: #0F549C;
+            color: white;
+        }
+
+    input {
+        outline: none;
+        border: none;
+        height: 30px;
+        margin: 0px 0px 15px 0px;
+        border-radius: 10px;
+    }
+
+        input[type=number]::-webkit-inner-spin-button,
+        input[type=number]::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+</style>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    import { Api } from './Api';
+
+    const [dni, setDni] = useState({
+        form: {
+            "dni": "dni"
+        }
+    })
+
+    let url = Api + `${dni}`
+
+    postData(url, state.form)
+        .then(data => {
+            console.log(data); // JSON data parsed by `data.json()` call
+            //Handle client response
+            if (data.error) {
+                document.getElementById('errorMessage').innerHTML = data.error
+            }
+            else {
+                switch (data.response_code) {
+                    case 200:
+                        console.log(data.response_code)
+                        break;
+
+                    case 403:
+                        document.getElementById('errorMessage').innerHTML = " El número de celular o correo electrónico ingresado no ha sido registrado."
+                        break;
+
+                    case 460:
+                        document.getElementById('errorMessage').innerHTML = " Debe de verificar el número de celular o correo electrónico."
+                        break;
+
+                    case 461:
+                        document.getElementById('errorMessage').innerHTML = " Debe de completar el registro"
+                        break;
+
+                    case 432:
+                        document.getElementById('errorMessage').innerHTML = " Código de país incorrecto"
+                        break;
+
+                    case 511:
+                        document.getElementById('errorMessage').innerHTML = " Contraseña incorrecta"
+                        break;
+
+                    default:
+                        document.getElementById('errorMessage').innerHTML = " Error, vuelva a intentarlo más tarde."
+                        break;
+                }
+            }
+        });
+
+    
+</script>
+
+
+<main>
+    <div class="container-formulario">
+        <div class="container">
+            <form class="formulario" id="formulario">
+                <h1>Iniciar <span>Sesión</span></h1>
+                <p>Ingresa tus credenciales para obtener tus datos</p>
+                <label class="texto">DNI: </label>
+                <input type="number" maxlength="8" required placeholder="Ingrese su DNI" name="dni" />
+                @*<label class="texto">Apellido: </label>
+                    <input type="text" maxlength="15" placeholder=" Ingrese su Apellido" id="dni" name="dni" / required />
+                    <label class="d-flex"><input type="checkbox" required /> Aceptar <span>terminos y condiciones</span> </label>*@
+                <button type="submit" class="btn-login">Iniciar Sesión</button>
+                <div id="errorMessage"></div>
+            </form>
+        </div>
+
+    </div>
+
+</main>

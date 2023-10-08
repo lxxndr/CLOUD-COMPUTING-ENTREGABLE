@@ -1,0 +1,1 @@
+﻿export const Api = "https://api.apis.net.pe/v1/dni?numero="
